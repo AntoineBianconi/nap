@@ -135,7 +135,7 @@ module.exports.jst = (pkg, gzip = @gzip) =>
 # Runs through all of the asset packages. Concatenates, minifies, and gzips them. Then outputs
 # the final packages. (To be run once during the build step for production)
 
-module.exports.package = (callback = ->) =>
+module.exports.package = (ts, callback = ->) =>
 
   clearAssetsDir()
 
@@ -147,7 +147,7 @@ module.exports.package = (callback = ->) =>
       contents = (contents for fn, contents of preprocessPkg pkg, 'js').join(';\n')
       contents = uglify contents if @mode is 'production' and @minify
       fingerprint = '-' + fingerprintForPkg('js', pkg)
-      filename = "#{pkg}.js"
+      filename = "#{pkg}-#{ts}.js"
       writeFile filename, contents, (err) =>
         if @gzip then gzipPkg(contents, filename, callback) else callback()
         total++
@@ -159,7 +159,7 @@ module.exports.package = (callback = ->) =>
       ).join('')
       contents = sqwish.minify contents if @mode is 'production'
       fingerprint = '-' + fingerprintForPkg('css', pkg)
-      filename = "#{pkg}.css"
+      filename = "#{pkg}-#{ts}.css"
       writeFile filename, contents, (err) =>
         if @gzip then gzipPkg(contents, filename, callback) else callback()
         total++
@@ -170,7 +170,7 @@ module.exports.package = (callback = ->) =>
       contents = @_tmplPrefix + contents
       contents = uglify contents if @mode is 'production' and @minify
       fingerprint = '-' + fingerprintForPkg('jst', pkg)
-      filename = "#{pkg}.jst.js"
+      filename = "#{pkg}-#{ts}.jst.js"
       writeFile filename , contents, (err) =>
         if @gzip then gzipPkg(contents, filename, callback) else callback()
         total++
