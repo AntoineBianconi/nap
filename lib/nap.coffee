@@ -74,7 +74,7 @@ module.exports.js = (pkg, gzip = @gzip) =>
   if @mode is 'production'
     fingerprint = '-' + fingerprintForPkg('js', pkg) if @mode is 'production'
     src = (@cdnUrl ? @_assetsDir) + '/' + "#{pkg}#{fingerprint ? ''}.js"
-    src += '.jgz' if gzip
+    src += '.gz' if gzip
     return "<script src='#{src}' type='text/javascript'></script>"
 
   expandAssetGlobs()
@@ -96,7 +96,7 @@ module.exports.css = (pkg, gzip = @gzip) =>
   if @mode is 'production'
     fingerprint = '-' + fingerprintForPkg('css', pkg) if @mode is 'production'
     src = (@cdnUrl ? @_assetsDir) + '/' + "#{pkg}#{fingerprint ? ''}.css"
-    src += '.cgz' if gzip
+    src += '.gz' if gzip
     return "<link href='#{src}' rel='stylesheet' type='text/css'>"
 
   expandAssetGlobs()
@@ -118,7 +118,7 @@ module.exports.jst = (pkg, gzip = @gzip) =>
   if @mode is 'production'
     fingerprint = '-' + fingerprintForPkg('jst', pkg) if @mode is 'production'
     src = (@cdnUrl ? @_assetsDir) + '/' + "#{pkg}#{fingerprint ? ''}.jst.js"
-    src += '.jgz' if gzip
+    src += '.gz' if gzip
     return "<script src='#{src}' type='text/javascript'></script>"
 
   expandAssetGlobs()
@@ -442,7 +442,7 @@ embedFiles = (filename, contents) =>
 
 gzipPkg = (contents, filename, callback) =>
   file = path.join(@_outputDir, filename)
-  ext = if _str.endsWith filename, '.js' then '.jgz' else '.cgz'
+  ext = if _str.endsWith filename, '.js' then '.gz' else '.gz'
   outputFilename = file + ext
   zlib.gzip contents, (err, buf) ->
     fs.writeFile outputFilename, buf, callback
